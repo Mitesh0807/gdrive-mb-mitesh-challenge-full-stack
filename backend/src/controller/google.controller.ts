@@ -22,11 +22,13 @@ const fileTypeRiskScores = {
   ".png": 1,
   ".gif": 1,
 };
-
 const fileSizeThreshold = 10 * 1024 * 1024; // 10 MB
 
 const sharedFileRiskIncrement = 2;
 
+const moderateRiskThreshold = 4;
+
+const lowRiskThreshold = 2;
 const maxSharingRiskThreshold = 10;
 
 export const authGoogle = asyncHandler(async (req, res) => {
@@ -110,7 +112,7 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
     if (file.size > fileSizeThreshold) {
       fileRiskScore += 1;
     }
-
+    console.log(file);
     // Factor in sharing settings
     const permissionCount = file?.permissions?.length;
     //@ts-ignore next-line
@@ -118,6 +120,15 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
       //@ts-ignore next-line
       permissionCount > maxSharingRiskThreshold ? sharedFileRiskIncrement : 0;
     fileRiskScore += sharingRiskScore;
+    //@ts-ignore
+    const isPubliclyAccessible = file?.permissions?.some(
+      (permission) => permission.type === "anyone",
+    );
+    if (isPubliclyAccessible) {
+      fileRiskScore = 5; // Assign highest risk score
+    }
+
+    totalRiskScore += fileRiskScore;
 
     totalRiskScore += fileRiskScore;
 
