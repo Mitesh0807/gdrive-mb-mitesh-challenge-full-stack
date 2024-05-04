@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - 5173:5173
+    command: yarn run dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    command: yarn start
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db
+
+  db:
+    image: mongo
+    container_name: db
+    command: ["--quiet", "--logpath", "/dev/null"]
+    volumes:
+      - data:/data/db
+    ports:
+      - 27017:27017
+
+volumes:
+  frontend:
+  backend:
+  data:
