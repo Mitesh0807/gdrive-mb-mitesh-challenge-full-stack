@@ -4,7 +4,14 @@ import cors from "cors";
 import { google } from "googleapis";
 import fs from "fs";
 import dotenv from "dotenv";
+import connectDB from "./db/connection";
+import logger from "./utils/logger";
 dotenv.config();
+
+(async () => {
+  const conn = await connectDB();
+})();
+
 const app = express();
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -32,8 +39,6 @@ app.get("/google/redirect", async (req, res) => {
   const code = req.query.code;
 
   const { tokens } = await oauth2Client.getToken(code as string);
-  // oauth2Client.setCredentials(tokens);
-
   fs.writeFileSync("./tokens.json", JSON.stringify(tokens));
 
   console.log(tokens);
@@ -42,8 +47,6 @@ app.get("/google/redirect", async (req, res) => {
 });
 
 app.get("/google/drive/metadata", async (req, res) => {
-  // const drive = google.drive({ version: "v3", auth:  });
-
   const accesstoken = JSON.parse(fs.readFileSync("./tokens.json", "utf8"));
   const drive = google.drive({ version: "v3", auth: oauth2Client });
 
@@ -59,5 +62,5 @@ app.get("/google/drive/metadata", async (req, res) => {
 });
 
 app.listen(process.env.PORT || 8000, () => {
-  console.log("Example app listening on port ", process.env.PORT || 8000);
+  logger.info(`Server started on port ${process.env.PORT || 8000}`);
 });
