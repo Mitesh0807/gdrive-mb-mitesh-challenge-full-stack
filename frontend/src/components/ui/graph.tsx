@@ -4,6 +4,8 @@ const SpeedoGraph = ({ value }: { value?: number }) => {
     return (
         <div>
             <ReactSpeedometer
+                height={250}
+                width={250}
                 needleHeightRatio={0.7}
                 maxSegmentLabels={4}
                 segments={1000}
