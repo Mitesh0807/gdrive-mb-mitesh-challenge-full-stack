@@ -131,6 +131,7 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
   const files = response.data.files;
   let totalRiskScore = 0;
   const fileAnalytics: any[] = [];
+  const externalFiles: any[] = [];
   let highRiskCount = 0;
   let moderateRiskCount = 0;
   let lowRiskCount = 0;
@@ -181,8 +182,8 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
     );
     if (isExternallyShared) {
       externalShareCount++;
+      externalFiles.push(file);
     }
-
     // Check if file name matches secret pattern
     //@ts-ignore
     const matchesSecretPattern = secretPatternRegex.test(file.name);
@@ -226,6 +227,7 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
     files,
     totalFiles,
     externalShareCount,
+    externalFiles,
   };
 
   res.json(analytics);

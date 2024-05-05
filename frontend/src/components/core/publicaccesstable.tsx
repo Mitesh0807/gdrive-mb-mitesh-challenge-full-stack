@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table"
 import { Link2Icon } from "@radix-ui/react-icons";
 
-interface FileData {
+export interface FileData {
     owners: {
         displayName: string;
         emailAddress: string;

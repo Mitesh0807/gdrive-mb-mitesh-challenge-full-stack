@@ -2,7 +2,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 function FindingSession({ riskLevel, className, publicAccsedNo, peopleWithAccess }: { riskLevel: number, className?: string, publicAccsedNo: number, peopleWithAccess: number }) {
     return (
-        <Card className={className}>
+        // long card
+        <Card className="w-full h-full ">
             <CardHeader>
                 <CardTitle>Finding Session</CardTitle>
             </CardHeader>
