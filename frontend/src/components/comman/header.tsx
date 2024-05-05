@@ -7,14 +7,11 @@ const Header = () => {
                 <div className='flex items-center'>
                     <h1 className='text-xl font-bold'>MonkeyBox</h1>
                 </div>
-
                 <div className='flex items-center'>
                     <ThemeModeToggle />
                 </div>
             </div>
-
         </div>
-
     )
 }
 
