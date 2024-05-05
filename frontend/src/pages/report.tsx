@@ -11,13 +11,24 @@ import Publicaccesscard from "@/components/core/publicaccesscard";
 import PeopleWithAccess from "@/components/core/peoplewithaccess";
 import FindingSession from "@/components/core/findingsession";
 import { Separator } from "@/components/ui/separator";
-
+import { useEffect } from "react";
+import { baseUrl } from "@/env";
 
 const DriveReport = () => {
+    useEffect(() => {
+        (async () => {
+            const id = localStorage.getItem("_id");
+            console.log(id);
+            if (!id) return
+            const res = await fetch(`${baseUrl}google/drive/metadata?id=${encodeURIComponent(id)}`);
+            const jsonData = await res.json();
+            console.log(jsonData);
+        })()
+    }, [])
     return (
         <>
             <div className='flex justify-center items-center space-x-4 h-screen'>
-                <Card className="w-1/4 h-2/5">
+                <Card className="w-1/4 h-2/5 border-size-2">
                     <CardHeader>
                         <CardTitle>Risk Report</CardTitle>
                         <CardDescription className="text-sm m-5">Overall Risk <Crosshair2Icon className="h-6 w-6 inline-block" /></CardDescription>
