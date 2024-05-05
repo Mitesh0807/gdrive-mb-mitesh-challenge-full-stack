@@ -11,10 +11,12 @@ import Publicaccesscard from "@/components/core/publicaccesscard";
 import PeopleWithAccess from "@/components/core/peoplewithaccess";
 import FindingSession from "@/components/core/findingsession";
 import { Separator } from "@/components/ui/separator";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { baseUrl } from "@/env";
+import PublicAccessTable from "@/components/core/publicaccesstable";
 
 const DriveReport = () => {
+    const [files, setFiles] = useState([]);
     useEffect(() => {
         (async () => {
             const id = localStorage.getItem("_id");
@@ -22,12 +24,13 @@ const DriveReport = () => {
             if (!id) return
             const res = await fetch(`${baseUrl}google/drive/metadata?id=${encodeURIComponent(id)}`);
             const jsonData = await res.json();
+            setFiles(jsonData?.files)
             console.log(jsonData);
         })()
     }, [])
     return (
         <>
-            <div className='flex justify-center items-center space-x-4 h-screen'>
+            <div className='flex justify-center items-center space-x-4 w-full pt-20 pb-10'>
                 <Card className="w-1/4 h-2/5 border-size-2">
                     <CardHeader>
                         <CardTitle>Risk Report</CardTitle>
@@ -50,8 +53,12 @@ const DriveReport = () => {
                 <PeopleWithAccess publicNo={10} className="w-1/4 h-2/5" />
             </div >
             <Separator />
-            <div className='flex justify-center items-center space-x-4 h-screen'>
+            <div className='flex justify-center items-center space-x-4 pt-10 pb-10'>
                 <FindingSession riskLevel={10} className="w-1/4 h-2/5" publicAccsedNo={10} peopleWithAccess={10} />
+            </div>
+            <Separator />
+            <div className='flex justify-center items-center space-x-4 pt-10'>
+                <PublicAccessTable files={files} />
             </div>
         </>
     )

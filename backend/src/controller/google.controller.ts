@@ -2,10 +2,9 @@ import asyncHandler from "../middleware/asyncHandler";
 import { google } from "googleapis";
 import fs from "fs";
 import dotenv from "dotenv";
-import googleDriveInstance, { scope } from "../utils/googleapi.instance";
+import googleDriveInstance from "../utils/googleapi.instance";
 import logger from "../utils/logger";
 import userModel from "../model/user.model";
-import mongoose from "mongoose";
 dotenv.config();
 
 const fileTypeRiskScores = {
@@ -60,10 +59,8 @@ export const authGoogle = asyncHandler(async (req, res) => {
 
 export const redirectGoogle = asyncHandler(async (req, res) => {
   const code = req.query.code;
-  logger.info(req.state);
   const state = req.query.state;
   const _id = state;
-  logger.info(_id);
 
   const { tokens } = await googleDriveInstance.getToken(code as string);
   const userDetails = await userModel.findById(_id);
@@ -79,9 +76,7 @@ export const redirectGoogle = asyncHandler(async (req, res) => {
     scope: tokens.scope,
     id_token: tokens.id_token,
   });
-  anayticsOfGoogleDrive(req, res);
-
-  // res.send(tokens);
+  res.redirect(`${process.env.FE_URI}report`);
 });
 
 export const driveMetadata = asyncHandler(async (req, res) => {
@@ -108,13 +103,14 @@ export const driveList = asyncHandler(async (req, res) => {
 
 export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
   const _id = req.query.id;
-  logger.info(_id);
   if (!_id) return res.status(400).json({ message: "User id not found" });
+
   const userDetails = await userModel.findOne({ _id });
   if (!userDetails) {
     logger.error("User not found");
     return res.status(404).json({ message: "User not found" });
   }
+
   const accesstoken = {
     access_token: userDetails?.access_token,
     refresh_token: userDetails?.refresh_token,
@@ -123,6 +119,7 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
     scope: userDetails?.scope ?? undefined,
     id_token: userDetails?.id_token,
   };
+
   const drive = google.drive({ version: "v3", auth: googleDriveInstance });
   googleDriveInstance.setCredentials(accesstoken);
 
@@ -133,55 +130,71 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
 
   const files = response.data.files;
   let totalRiskScore = 0;
-
-  //@ts-ignore next-line
   const fileAnalytics: any[] = [];
   let highRiskCount = 0;
   let moderateRiskCount = 0;
   let lowRiskCount = 0;
+  let externalShareCount = 0;
   if (!files || files.length === 0) {
     throw new Error("No files found");
   }
+
+  // Regex pattern to detect potential secrets or passwords in file names
+  const secretPatternRegex = /password|secret|key|token/i;
 
   files.forEach((file) => {
     if (file === null) {
       return;
     }
-    //@ts-ignore next-line
+
     const fileExtension = file?.name?.split(".")?.pop()?.toLowerCase();
-    //@ts-ignore next-line
-    let fileRiskScore = fileTypeRiskScores[`.${fileExtension}`] || 2; // Default to moderate risk
+    //@ts-ignore
+    let fileRiskScore = fileTypeRiskScores[`.${fileExtension}`] || 2;
 
     // Factor in file size
-    //@ts-ignore next-line
+    //@ts-ignore
     if (file.size > fileSizeThreshold) {
       fileRiskScore += 1;
     }
-    console.log(file);
+
     // Factor in sharing settings
     const permissionCount = file?.permissions?.length;
-    //@ts-ignore next-line
-    const sharingRiskScore =
-      //@ts-ignore next-line
-      permissionCount > maxSharingRiskThreshold ? sharedFileRiskIncrement : 0;
+    const sharingRiskScore = permissionCount
+      ? permissionCount > maxSharingRiskThreshold
+        ? sharedFileRiskIncrement
+        : 0
+      : 0;
     fileRiskScore += sharingRiskScore;
-    //@ts-ignore
+
     const isPubliclyAccessible = file?.permissions?.some(
       (permission) => permission.type === "anyone"
     );
     if (isPubliclyAccessible) {
-      fileRiskScore = 5; // Assign highest risk score
+      fileRiskScore = 3;
+    }
+
+    // @ts-ignore
+    const isExternallyShared = file?.permissions?.some(
+      (permission) =>
+        permission.type === "user" &&
+        permission?.emailAddress?.indexOf("@example.com") === -1
+    );
+    if (isExternallyShared) {
+      externalShareCount++;
+    }
+
+    // Check if file name matches secret pattern
+    //@ts-ignore
+    const matchesSecretPattern = secretPatternRegex.test(file.name);
+    if (matchesSecretPattern) {
+      fileRiskScore = 5;
     }
 
     totalRiskScore += fileRiskScore;
 
-    totalRiskScore += fileRiskScore;
-
     // Categorize risk level
-    //@ts-ignore next-line
     if (fileRiskScore >= moderateRiskThreshold) {
       highRiskCount++;
-      //@ts-ignore next-line
     } else if (fileRiskScore > lowRiskThreshold) {
       moderateRiskCount++;
     } else {
@@ -195,6 +208,8 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
       webViewLink: file.webViewLink,
       riskScore: fileRiskScore,
       permissionCount,
+      isPubliclyAccessible,
+      matchesSecretPattern,
     });
   });
 
@@ -208,14 +223,42 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
     moderateRiskCount,
     lowRiskCount,
     fileAnalytics,
+    files,
+    totalFiles,
+    externalShareCount,
   };
 
   res.json(analytics);
 });
 
 export const revokeGoogle = asyncHandler(async (req, res) => {
-  const accesstoken = JSON.parse(fs.readFileSync("./tokens.json", "utf8"));
-  // revokeGoogle accesstoken and all the permissions associated with it
-  googleDriveInstance.revokeToken(accesstoken.access_token);
-  // googleDriveInstance.
+  const _id = req.query.id;
+  if (!_id) return res.status(400).json({ message: "User id not found" });
+
+  const userDetails = await userModel.findById(_id);
+  if (!userDetails) {
+    logger.error("User not found");
+    return res.status(404).json({ message: "User not found" });
+  }
+  const accesstoken = {
+    access_token: userDetails?.access_token,
+    refresh_token: userDetails?.refresh_token,
+    expiry_date: userDetails?.expiry_date,
+    token_type: userDetails?.token_type,
+    scope: userDetails?.scope ?? undefined,
+    id_token: userDetails?.id_token,
+  };
+  googleDriveInstance.setCredentials(accesstoken);
+
+  if (
+    Object.values(accesstoken).every(
+      (value) => value === null || value === undefined
+    )
+  ) {
+    return res.status(400).json({ message: "Access token not found" });
+  }
+  const response = googleDriveInstance.revokeToken(
+    accesstoken.access_token as string
+  );
+  res.json(response);
 });
