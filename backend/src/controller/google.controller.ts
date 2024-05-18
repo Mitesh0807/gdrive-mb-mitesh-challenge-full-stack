@@ -66,7 +66,7 @@ export const redirectGoogle = asyncHandler(async (req, res) => {
   const userDetails = await userModel.findById(_id);
   if (!userDetails) {
     logger.error("User not found");
-     res.status(404).json({ message: "User not found" });
+    res.status(404).json({ message: "User not found" });
   }
   const userUpdate = await userModel.findByIdAndUpdate(_id, {
     access_token: tokens.access_token,
@@ -103,14 +103,15 @@ export const driveList = asyncHandler(async (req, res) => {
 
 export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
   const _id = req.query.id;
-  if (!_id)  {res.status(400).json({ message: "User id not found" });
-  return
-}
+  if (!_id) {
+    res.status(400).json({ message: "User id not found" });
+    return;
+  }
   const userDetails = await userModel.findOne({ _id });
   if (!userDetails) {
     logger.error("User not found");
-     res.status(404).json({ message: "User not found" });
-     return
+    res.status(404).json({ message: "User not found" });
+    return;
   }
 
   const accesstoken = {
@@ -238,13 +239,14 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
 
 export const revokeGoogle = asyncHandler(async (req, res) => {
   const _id = req.query.id;
-  if (!_id)  {res.status(400).json({ message: "User id not found" });
-  return
-}
+  if (!_id) {
+    res.status(400).json({ message: "User id not found" });
+    return;
+  }
   const userDetails = await userModel.findById(_id);
   if (!userDetails) {
-     res.status(404).json({ message: "User not found" });
-     return
+    res.status(404).json({ message: "User not found" });
+    return;
   }
   const accesstoken = {
     access_token: userDetails?.access_token,
@@ -261,8 +263,8 @@ export const revokeGoogle = asyncHandler(async (req, res) => {
       (value) => value === null || value === undefined
     )
   ) {
-     res.status(400).json({ message: "Access token not found" });
-     return
+    res.status(400).json({ message: "Access token not found" });
+    return;
   }
   const response = googleDriveInstance.revokeToken(
     accesstoken.access_token as string
