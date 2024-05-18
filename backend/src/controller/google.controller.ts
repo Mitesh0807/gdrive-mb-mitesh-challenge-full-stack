@@ -79,28 +79,6 @@ export const redirectGoogle = asyncHandler(async (req, res) => {
   res.redirect(`${process.env.FE_URI}report`);
 });
 
-export const driveMetadata = asyncHandler(async (req, res) => {
-  const accesstoken = JSON.parse(fs.readFileSync("./tokens.json", "utf8"));
-  const drive = google.drive({ version: "v3", auth: googleDriveInstance });
-  googleDriveInstance.setCredentials(accesstoken);
-  const metadata = await drive.files.list({
-    fields:
-      "nextPageToken, files(id, name, modifiedTime, owners, permissions, webContentLink, webViewLink)",
-  });
-  res.send(metadata);
-});
-
-export const driveList = asyncHandler(async (req, res) => {
-  const accesstoken = JSON.parse(fs.readFileSync("./tokens.json", "utf8"));
-  const drive = google.drive({ version: "v3", auth: googleDriveInstance });
-  googleDriveInstance.setCredentials(accesstoken);
-  const metadata = await drive.files.list({
-    fields:
-      "nextPageToken, files(id, name, modifiedTime, owners, permissions, webContentLink, webViewLink)",
-  });
-  res.send(metadata);
-});
-
 export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
   const _id = req.query.id;
   if (!_id) {
