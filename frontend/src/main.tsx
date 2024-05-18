@@ -10,6 +10,8 @@ import Header from "@/components/comman/header";
 import Footer from '@/components/comman/footer.tsx';
 import { ThemeProvider } from "@/components/theme-provider"
 import DriveReport from './pages/report.tsx';
+import { Toaster } from "@/components/ui/toaster"
+
 
 
 const router = createBrowserRouter([
@@ -31,6 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <RouterProvider router={router} />
         <Footer />
       </div>
+      <Toaster />
     </ThemeProvider>
   </React.StrictMode>,
 )

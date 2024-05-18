@@ -9,7 +9,19 @@ import metomicSearch from '@/assets/metomic_serach_logo.svg';
 import metomicFile from '@/assets/metomic_files_logo.svg'
 import { Separator } from "@/components/ui/separator";
 import Portfolio from "@/components/core/testomony";
-import { Table, TableBody, TableCell, TableRow } from "./components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { useToast } from "./components/ui/use-toast";
+
 
 const infoItems = [
   {
@@ -27,31 +39,79 @@ const infoItems = [
 ];
 
 function App() {
+  const { toast } = useToast()
+  const [isDailogOpen, setIsDialogOpen] = useState(false);
+  const [emailId, setEmailId] = useState("");
   const getRedirectionUrl = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailId)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
     try {
-      const res = await fetch(`${baseUrl}google/auth?email=waste6989@gmail.com`);
+      const res = await fetch(`${baseUrl}google/auth:${encodeURIComponent(emailId)}`);
       const data = await res.json();
-      console.log(data);
       localStorage.setItem("_id", data?.state);
       window.open(data?.url, "_blank");
     } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch the redirection URL.",
+        variant: "destructive",
+      })
       console.error('Failed to fetch the redirection URL:', error);
     }
+  };
+  const handleOnOpen = () => {
+    setIsDialogOpen((prev) => !prev
+    )
+  };
+  const handleOnClose = () => {
+    getRedirectionUrl();
+    setIsDialogOpen((prev) => !prev
+    )
+  };
+
+  const onEmailIdChange = (value: string) => {
+    setEmailId(value);
   };
 
   return (
     <>
       <div className="App flex items-center justify-center mb-96">
         <div className="w-1/2 mr-10">
-          <Button
-            className="w-full mb-10 h-1/3 border-double bg-gray-800"
-            variant="destructive"
-            onClick={getRedirectionUrl}
-          >
-            <img className="w-10 h-10" src={googleDriveIcon} alt="Google Drive Icon" />
-            Get Your Google Drive Analysis
-            <ExternalLink className="ml-2" />
-          </Button>
+          <Dialog open={isDailogOpen} onOpenChange={handleOnOpen}>
+            <Button
+              className="w-full mb-10 h-1/3 border-double bg-gray-800"
+              variant="destructive"
+              onClick={handleOnOpen}
+            >
+              <img className="w-10 h-10" src={googleDriveIcon} alt="Google Drive Icon" />
+              Get Your Google Drive Analysis
+              <ExternalLink className="ml-2" />
+            </Button>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Email Id Of your Google Drive Account</DialogTitle>
+                <DialogDescription>
+                  Enter the email id of your Google Drive account.
+                </DialogDescription>
+                <Input
+                  type="email"
+                  value={emailId}
+                  onChange={(e) => onEmailIdChange(e.target.value)}
+                />
+                <Separator />
+                <Separator />
+                <Button className="w-full mt-10 h-1/3 border-double bg-gray-800" variant="destructive" onClick={handleOnClose}>Submit</Button>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+
           <Separator />
           <Table>
             <TableBody>
@@ -64,14 +124,6 @@ function App() {
               ))}
             </TableBody>
           </Table>
-          {/* {
-            infoItems.map((item, index) => (
-              <div className="w-full flex items-center justify-center m-5" key={index}>
-                <img src={item.src} alt="Metomic Alert Logo" className="w-10 h-10" />
-                <p className="text-amber-500">{item.text}</p>
-              </div>
-            ))
-          } */}
           <Separator />
         </div>
         <div>
