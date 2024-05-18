@@ -19,6 +19,7 @@ import { FileData, ResponseOfAnalysis } from "@/types/analysis.types";
 import googleDriveIcon from "@/assets/Google_Drive_icon_(2020).svg";
 import { ExternalLink } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import PeopleWithAccess from "@/components/core/peoplewithaccess";
 
 
 const DriveReport = () => {
@@ -55,11 +56,11 @@ const DriveReport = () => {
   };
   return (
     <>
-      <div className="flex flex-col items-center justify-center">
-        <Button className={`w-1/4`} onClick={revokeAccess}>
-          <img className="w-10 h-10" src={googleDriveIcon} /> Revoke Access
-          <ExternalLink className="ml-2" />
-        </Button>
+      <div className="flex flex-col items-center justify-center p-20 ">
+        <Button className="w-1/3 mb-10 h-1/3 border-double bg-gray-800" onClick={revokeAccess} variant={'destructive'}><img className="w-10 h-10" src={googleDriveIcon} />Revoke Your Google Drive Access<ExternalLink className="ml-2 " /></Button>
+      </div>
+      <div>
+        Your Google Drive Files Anaylsis
       </div>
       <div className="flex justify-center items-center space-x-4 w-full pt-20 pb-10">
         <Card className="w-1/4 h-2/5 border-size-2">
@@ -77,7 +78,7 @@ const DriveReport = () => {
           publicNo={data ? data?.externalShareCount : 0}
           className="w-1/4 h-2/5"
         />
-        {/* <PeopleWithAccess publicNo={highRiskedFile?.length} className="w-1/4 h-2/5" /> */}
+        <PeopleWithAccess publicNo={data?.highRiskedFiles?.length || 0} className="w-1/4 h-2/5" />
       </div>
       <Separator />
       <div className="flex justify-center items-center space-x-4 pt-10 pb-10">
@@ -88,48 +89,20 @@ const DriveReport = () => {
         />
       </div>
       <Separator />
-      {/* {highRiskedFile && highRiskedFile?.length > 0 ? (
+      {data?.highRiskedFiles && data?.highRiskedFiles?.length > 0 ? (
         <>
-            <div className="flex flex-col items-center justify-center p-20 ">
-                <Button className="w-1/3 mb-10 h-1/3 border-double bg-gray-800" onClick={revokeAccess} variant={'destructive'}><img className="w-10 h-10" src={googleDriveIcon} />Revoke Your Google Drive Access<ExternalLink className="ml-2 " /></Button>
-            </div>
-            <div>
-                Your Google Drive Files Anaylsis
-            </div>
-            <div className='flex justify-center items-center space-x-4 w-full pt-20 pb-10 border-solid	'>
-                <Card className="w-1/4 h-2/5 border-size-2">
-                    <CardHeader>
-                        <CardTitle>Your Google Drive Risk Report</CardTitle>
-                        <CardDescription className="text-sm m-5">Overall Risk Percentage <Crosshair2Icon className="h-6 w-6 inline-block" /></CardDescription>
-                    </CardHeader>
-                    <CardContent>
+          <p className="text-amber-500 pt-10">High Risked Files this needs your urget attention</p>
 
-                        <SpeedoGraph value={overallRiskPercentage / 100} />
-                    </CardContent>
-                </Card>
-                <Publicaccesscard publicNo={data ? data?.externalShareCount : 0} className="w-1/4 h-2/5" />
-                <PeopleWithAccess publicNo={10} className="w-1/4 h-2/5" />
-            </div >
-            <Separator />
-            <div className='flex justify-center items-center w-full space-x-4 pt-10 pb-10'>
-                <FindingSession riskLevel={10} className="w-1/4 h-2/5" publicAccsedNo={10} peopleWithAccess={10} />
-            </div>
-            <Separator />
-            <div className='flex justify-center items-center space-x-4 pt-10 pb-10'>
-                <p className="text-lg font-bold text-center">Files You Have Access To</p>
-            </div>
-            <div className='flex justify-center items-center space-x-4 pt-10'>
-                <PublicAccessTable files={files} />
-            </div>
-            {
-                externalFiles && externalFiles.length ?
-                    <><Separator /><div className='flex justify-center items-center space-x-4 pt-10'>
-                        <PublicAccessTable files={externalFiles} />
-                    </div></>
-                    : null
-            }
+          <div className="flex justify-center items-center space-x-4 w-full pt-20 pb-10">
+            <PublicAccessTable
+              files={data?.highRiskedFiles || []}
+            />
+          </div>
+          <Separator />
+          <Separator />
+          <Separator />
         </>
-      ) : null} */}
+      ) : null}
       {externalFiles && externalFiles.length ? (
         <>
           <Separator />

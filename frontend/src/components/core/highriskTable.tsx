@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FileData } from "./publicaccesstable";
+import { FileData } from "@/types/analysis.types";
 import { AlertCircleIcon } from "lucide-react";
 
 interface TableProps {

@@ -1,0 +1,19 @@
+<svg version="1.1" id="Layer_1" xmlns:x="ns_extend;" xmlns:i="ns_ai;" xmlns:graph="ns_graphs;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 146.9 113" style="enable-background:new 0 0 146.9 113;" xml:space="preserve">
+ <style type="text/css">
+  .st0{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+ </style>
+ <metadata>
+  <sfw xmlns="ns_sfw;">
+   <slices>
+   </slices>
+   <sliceSourceBounds bottomLeftOrigin="true" height="113" width="146.9" x="0" y="0">
+   </sliceSourceBounds>
+  </sfw>
+ </metadata>
+ <g>
+  <path class="st0" d="M90.4,0l56.5,113h-113L90.4,0z M47.6,104.5h85.6L90.4,19L47.6,104.5z">
+  </path>
+  <path class="st0" d="M56.5,0L113,113H0L56.5,0z M56.5,19l-42.8,85.6h85.6L56.5,19z">
+  </path>
+ </g>
+</svg>

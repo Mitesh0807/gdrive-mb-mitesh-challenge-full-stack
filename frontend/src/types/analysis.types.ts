@@ -42,6 +42,7 @@ export interface ResponseOfAnalysis {
   totalRiskScore: number;
   overallRiskPercentage: number;
   highRiskCount: number;
+  highRiskedFiles: FileData[];
   moderateRiskCount: number;
   lowRiskCount: number;
   fileAnalytics: FileAnalytics[];
