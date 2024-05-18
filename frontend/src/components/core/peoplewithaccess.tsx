@@ -8,8 +8,8 @@ function PeopleWithAccess({ publicNo, className }: { publicNo: number, className
             </CardHeader>
             <CardContent className="flex flex-col items-center justify-center">
                 <p className="text-3xl font-bold">{publicNo}</p>
-                <p className="text-lg font-bold">Public Access</p>
-                <p className="text-sm">{publicNo} people have access</p>
+                <p className="text-lg font-bold">High Risked Files</p>
+                <p className="text-sm">{publicNo}</p>
             </CardContent>
         </Card>
     )

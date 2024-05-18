@@ -1,4 +1,4 @@
-import asyncHandler from "../middleware/asyncHandler";
+import asyncHandler from "express-async-handler";
 import { google } from "googleapis";
 import fs from "fs";
 import dotenv from "dotenv";
@@ -66,7 +66,7 @@ export const redirectGoogle = asyncHandler(async (req, res) => {
   const userDetails = await userModel.findById(_id);
   if (!userDetails) {
     logger.error("User not found");
-    return res.status(404).json({ message: "User not found" });
+     res.status(404).json({ message: "User not found" });
   }
   const userUpdate = await userModel.findByIdAndUpdate(_id, {
     access_token: tokens.access_token,
@@ -103,12 +103,14 @@ export const driveList = asyncHandler(async (req, res) => {
 
 export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
   const _id = req.query.id;
-  if (!_id) return res.status(400).json({ message: "User id not found" });
-
+  if (!_id)  {res.status(400).json({ message: "User id not found" });
+  return
+}
   const userDetails = await userModel.findOne({ _id });
   if (!userDetails) {
     logger.error("User not found");
-    return res.status(404).json({ message: "User not found" });
+     res.status(404).json({ message: "User not found" });
+     return
   }
 
   const accesstoken = {
@@ -133,6 +135,7 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
   const fileAnalytics: any[] = [];
   const externalFiles: any[] = [];
   let highRiskCount = 0;
+  let highRiskedFiles: any[] = [];
   let moderateRiskCount = 0;
   let lowRiskCount = 0;
   let externalShareCount = 0;
@@ -140,7 +143,6 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
     throw new Error("No files found");
   }
 
-  // Regex pattern to detect potential secrets or passwords in file names
   const secretPatternRegex = /password|secret|key|token/i;
 
   files.forEach((file) => {
@@ -193,9 +195,9 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
 
     totalRiskScore += fileRiskScore;
 
-    // Categorize risk level
     if (fileRiskScore >= moderateRiskThreshold) {
       highRiskCount++;
+      highRiskedFiles.push(file);
     } else if (fileRiskScore > lowRiskThreshold) {
       moderateRiskCount++;
     } else {
@@ -215,12 +217,13 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
   });
 
   const totalFiles = files.length;
-  const overallRiskPercentage = (totalRiskScore / (totalFiles * 5)) * 100; // Assuming max risk score is 5
+  const overallRiskPercentage = (totalRiskScore / (totalFiles * 5)) * 100;
 
   const analytics = {
     totalRiskScore,
     overallRiskPercentage,
     highRiskCount,
+    highRiskedFiles,
     moderateRiskCount,
     lowRiskCount,
     fileAnalytics,
@@ -235,12 +238,13 @@ export const anayticsOfGoogleDrive = asyncHandler(async (req, res) => {
 
 export const revokeGoogle = asyncHandler(async (req, res) => {
   const _id = req.query.id;
-  if (!_id) return res.status(400).json({ message: "User id not found" });
-
+  if (!_id)  {res.status(400).json({ message: "User id not found" });
+  return
+}
   const userDetails = await userModel.findById(_id);
   if (!userDetails) {
-    logger.error("User not found");
-    return res.status(404).json({ message: "User not found" });
+     res.status(404).json({ message: "User not found" });
+     return
   }
   const accesstoken = {
     access_token: userDetails?.access_token,
@@ -257,10 +261,11 @@ export const revokeGoogle = asyncHandler(async (req, res) => {
       (value) => value === null || value === undefined
     )
   ) {
-    return res.status(400).json({ message: "Access token not found" });
+     res.status(400).json({ message: "Access token not found" });
+     return
   }
   const response = googleDriveInstance.revokeToken(
     accesstoken.access_token as string
   );
-  res.json(response);
+  res.redirect(`${process.env.FE_URI}`);
 });
