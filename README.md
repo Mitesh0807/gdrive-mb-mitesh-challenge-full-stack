@@ -1,4 +1,3 @@
-Sure, I can help you create a README for your full-stack project focused on Google Drive risk analysis for a particular user. Here's a template you can use:
 
 ---
 
