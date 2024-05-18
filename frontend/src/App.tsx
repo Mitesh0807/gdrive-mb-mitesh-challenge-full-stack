@@ -1,6 +1,6 @@
-import "./App.css";
+import "@/App.css";
 import { Button } from "@/components/ui/button";
-import { baseUrl } from "./env";
+import { baseUrl } from "@/env";
 import googleDriveIcon from "@/assets/Google_Drive_icon_(2020).svg";
 import { ExternalLink } from 'lucide-react';
 import googleDrivePreview from "@/assets/google_drive_report_preview.png";
@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog"
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { useToast } from "./components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 
 const infoItems = [

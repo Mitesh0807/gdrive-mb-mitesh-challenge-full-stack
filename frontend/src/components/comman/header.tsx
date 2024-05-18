@@ -1,6 +1,6 @@
 import ThemeModeToggle from "@/components/comman/thememodetoggle"
 import MetoMicHeaderLogo from "@/assets/metomic_logo.png";
-import { useTheme } from "../theme-provider";
+import { useTheme } from "@/components/theme-provider";
 const Header = () => {
     const currentTheme = useTheme()
     return (

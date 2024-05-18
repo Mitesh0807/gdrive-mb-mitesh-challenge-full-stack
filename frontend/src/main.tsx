@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import App from '@/App.tsx'
+import '@/index.css'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -9,7 +9,7 @@ import {
 import Header from "@/components/comman/header";
 import Footer from '@/components/comman/footer.tsx';
 import { ThemeProvider } from "@/components/theme-provider"
-import DriveReport from './pages/report.tsx';
+import DriveReport from '@/pages/report.tsx';
 import { Toaster } from "@/components/ui/toaster"
 
 

@@ -1,7 +1,7 @@
 import { FileData } from "@/types/analysis.types";
 import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 import { useState } from "react";
-import PublicAccessTable from "../core/publicaccesstable";
+import PublicAccessTable from "@/components/core/publicaccesstable";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 
 const CollapsibleSection = ({ files }: { files: FileData[] }) => {
