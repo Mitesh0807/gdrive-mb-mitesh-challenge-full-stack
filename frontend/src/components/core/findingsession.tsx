@@ -15,3 +15,4 @@ function FindingSession({ riskLevel, highRiskCount }: { riskLevel: number, class
     )
 }
 export default FindingSession
+

@@ -24,45 +24,44 @@ function PublicAccessTable({
   accessText = "Public Access"
 }: TableProps) {
   return (
-    <>
-
-      <Table>
-        <TableCaption>{captionText}</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>File Name</TableHead>
-            <TableHead>Owner</TableHead>
-            <TableHead>Modified Time</TableHead>
-            <TableHead>{accessText}</TableHead>
+    <Table>
+      <TableCaption>{captionText}</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>File Name</TableHead>
+          <TableHead>Owner</TableHead>
+          <TableHead>Modified Time</TableHead>
+          <TableHead>{accessText}</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {files.map((file) => (
+          <TableRow key={file.id}>
+            <TableCell>{file.name}</TableCell>
+            <TableCell>
+              {file.owners.map((owner) => (
+                <div key={owner.emailAddress}>{owner.displayName}</div>
+              ))}
+            </TableCell>
+            <TableCell>
+              {new Date(file.modifiedTime).toLocaleString()}
+            </TableCell>
+            <TableCell>
+              {
+                <a
+                  href={file.webViewLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center"
+                >
+                  <Link2Icon className="mr-1" /> Open
+                </a>
+              }
+            </TableCell>
           </TableRow>
-        </TableHeader>
-        <TableBody className="divide-y text-left">
-          {files.map((file) => (
-            <TableRow key={file.id}>
-              <TableCell>{file.name}</TableCell>
-              <TableCell>
-                {file.owners.map((owner) => (
-                  <div key={owner.emailAddress}>{owner.displayName}</div>
-                ))}
-              </TableCell>
-              <TableCell>{new Date(file.modifiedTime).toLocaleString()}</TableCell>
-              <TableCell>
-                {(
-                  <a
-                    href={file.webViewLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center"
-                  >
-                    <Link2Icon className="mr-1" /> Open
-                  </a>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
 
