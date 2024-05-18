@@ -78,5 +78,3 @@ Contributions are welcome! Please follow the standard GitHub workflow:
 This project is licensed under the [MIT License](LICENSE).
 
 ---
-
-Feel free to adjust the sections and content based on your specific project requirements and preferences. Let me know if you need further assistance!
