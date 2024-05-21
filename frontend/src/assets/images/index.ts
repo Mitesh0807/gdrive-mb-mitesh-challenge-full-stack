@@ -1,0 +1,52 @@
+export {default as hidePng} from "./png/hide.png"
+export {default as visiblePng} from "./png/visible.png"
+export {default as dummyProductPng} from "./png/dummy-product.png"
+export {default as cartPng} from "./png/cart.png"
+export {default as heroSectionPng} from "./png/google drive report-p-800.png"
+export {default as gdriveDiscoverHalfPng} from "./png/gdrive-discover-half.png"
+export {default as gdriveDiscoverFullPng} from "./png/gdrive-discover-full.png"
+export {default as nonCpaPng} from "./png/NonCPA_Blk.png"
+export {default as reviewPlatformPng} from "./png/review-platform.png"
+export {default as appReviewPng} from "./png/app-review.png"
+
+
+//svg
+export {default as cancelSvg} from "./svg/cancel-icon.svg"
+export {default as deleteSvg} from "./svg/delete.svg"
+export {default as mainLogoSvg} from "./svg/main-logo.svg"
+export {default as editSvg} from "./svg/edit.svg"
+export {default as ticketSvg} from "./svg/ticket.svg"
+export {default as metomicLogoSvg} from "./svg/metomic.svg"
+export {default as leftArrowSvg} from "./svg/left-arrow.svg"
+export {default as discoverySvg} from "./svg/Discovery.svg"
+export {default as notificationSvg} from "./svg/Notifications.svg"
+export {default as workflowSvg} from "./svg/workflow.svg"
+export {default as fourStarSvg} from "./svg/4.5_star.svg"
+export {default as fiveStarSvg} from "./svg/5_star.svg"
+export {default as twitterSvg} from "./svg/twitter.svg"
+export {default as linkedinSvg} from "./svg/linkedin.svg"
+export {default as fiLockWhiteSvg} from "./svg/fi_lock_white.svg"
+export {default as gDriveSvg} from "./svg/gdrive.svg"
+export {default as fiFileSvg} from "./svg/fi_file-text.svg"
+export {default as fiUsersSvg} from "./svg/fi_users_green.svg"
+export {default as fiGlobeSvg} from "./svg/fi_globe.svg"
+export {default as g2LogoSvg} from "./svg/g2-logo.svg"
+export {default as pdfSvg} from "./svg/pdf.svg"
+export {default as documentSvg} from "./svg/page.svg"
+export {default as externalSvg} from "./svg/fi_external-link.svg"
+export {default as fiUsersGraySvg} from "./svg/fi_users.svg"
+export {default as riskScoreSvg} from "./svg/risk-score.svg"
+export {default as videoSvg} from "./svg/Type=video.svg"
+
+//gif
+export {default as inlineLoaderGif} from "./gif/inline-loader.gif"
+export {default as mainLoaderGif} from "./gif/main-loader.gif"
+export {default as inlineLoaderWhiteGif} from "./gif/inline-white-loader.gif"
+export {default as inlineLoaderPrimaryGif} from "./gif/inline-primary-loader.gif"
+
+// webp
+export {default as backgroundPatternGif} from "./webp/moroccan-flower-dark.webp"
+
+// logo & background
+export {default as backgroundImageJpg} from "./jpg/background-image.jpeg"
+export {default as mainLogo} from "./jpg/main-logo.jpeg"

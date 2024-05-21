@@ -1,0 +1,13 @@
+<svg width="168" height="24" viewBox="0 0 168 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M48 2L51.09 8.26L58 9.27L53 14.14L54.18 21.02L48 17.77L41.82 21.02L43 14.14L38 9.27L44.91 8.26L48 2Z" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M84 2L87.09 8.26L94 9.27L89 14.14L90.18 21.02L84 17.77L77.82 21.02L79 14.14L74 9.27L80.91 8.26L84 2Z" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M120 2L123.09 8.26L130 9.27L125 14.14L126.18 21.02L120 17.77L113.82 21.02L115 14.14L110 9.27L116.91 8.26L120 2Z" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M156 2L159.09 8.26L166 9.27L161 14.14L162.18 21.02L156 17.77L149.82 21.02L151 14.14L146 9.27L152.91 8.26L156 2Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<mask id="mask0_18_14" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="147" y="2" width="20" height="20">
+<path d="M157 2L160.09 8.26L167 9.27L162 14.14L163.18 21.02L157 17.77L150.82 21.02L152 14.14L147 9.27L153.91 8.26L157 2Z" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_18_14)">
+<rect x="145" y="-11" width="12" height="42" fill="black"/>
+</g>
+</svg>
