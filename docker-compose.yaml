@@ -10,8 +10,8 @@ services:
       - 5173:5173
     command: yarn run dev
     volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - ./frontend:/usr/src/app:cached
+      - /usr/src/app/node_modules
     environment:
       - NODE_ENV=development
     depends_on:
@@ -26,11 +26,10 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/app
-      - /app/node_modules
+      - ./backend:/usr/src/app:cached
+      - /usr/src/app/node_modules
     environment:
       - NODE_ENV=development
-
 
 volumes:
   frontend:

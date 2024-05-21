@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon src/index.ts",
-    "build": "tsc"
+    "start": "nodemon --legacy-watch src/index.ts",
+    "build": "tsc"    
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

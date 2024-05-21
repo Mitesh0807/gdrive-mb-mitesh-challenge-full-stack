@@ -1,18 +1,15 @@
-# Development stage
 FROM node:alpine AS development
 
 WORKDIR /usr/src/app
 
-# Copy package.json and install dependencies
 COPY package*.json ./
 COPY yarn.lock ./
 RUN yarn install
 
-# Copy the entire project
 COPY . .
 
-# Build the app
-RUN yarn build
+CMD ["yarn", "start"]
+
 # Production stage
 FROM node:alpine AS production
 

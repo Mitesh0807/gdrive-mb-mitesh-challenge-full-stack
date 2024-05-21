@@ -6,11 +6,10 @@ COPY package*.json ./
 COPY yarn.lock ./
 RUN yarn install
 
-
-
 COPY . .
 
-RUN npm run build
+CMD ["yarn", "run", "dev"]
+
 
 FROM node:alpine AS production
 
@@ -22,7 +21,8 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 COPY yarn.lock ./
-RUN yarn install --production
+COPY package-lock.json ./
+RUN npm install --production
 
 COPY --from=development /usr/src/app/dist ./dist
 

@@ -7,6 +7,9 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    watch:{
+      usePolling:true
+    }
   },
   preview: {
     port: 5173,
@@ -17,4 +20,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+   
 });
